@@ -1,7 +1,7 @@
 package HBaseIA.TwitBase.filters;
 
 import HBaseIA.TwitBase.hbase.UsersDAO;
-import Hbase.utils.HBaseUtils;
+import utils.HBaseUtils;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.*;

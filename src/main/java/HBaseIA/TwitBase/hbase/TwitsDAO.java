@@ -40,6 +40,7 @@ public class TwitsDAO {
   }
 
   private static byte[] mkRowKey(String user, DateTime dt) {
+	  System.out.println(user);
     byte[] userHash = Md5Utils.md5sum(user);
     byte[] timestamp = Bytes.toBytes(-1 * dt.getMillis());
     byte[] rowKey = new byte[Md5Utils.MD5_LENGTH + longLength];
@@ -89,7 +90,7 @@ public class TwitsDAO {
   }
 
   public void postTwit(String user, DateTime dt, String text) throws IOException {
-
+	  
     HTableInterface twits = pool.getTable(TABLE_NAME);
 
     Put p = mkPut(new Twit(user, dt, text));

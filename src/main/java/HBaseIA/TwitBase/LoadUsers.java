@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.hadoop.hbase.client.HTablePool;
 
+import utils.HBaseUtils;
 import utils.LoadUtils;
 
 import HBaseIA.TwitBase.hbase.UsersDAO;
@@ -31,12 +32,14 @@ public class LoadUsers {
   }
 
   public static void main(String[] args) throws IOException {
+	  args=new String[1];
+	  args[0]="100";
     if (args.length == 0 || "help".equals(args[0])) {
       System.out.println(usage);
       System.exit(0);
     }
 
-    HTablePool pool = new HTablePool();
+    HTablePool pool = new HTablePool(HBaseUtils.getConfiguration(),10);
     UsersDAO dao = new UsersDAO(pool);
 
     int count = Integer.parseInt(args[0]);

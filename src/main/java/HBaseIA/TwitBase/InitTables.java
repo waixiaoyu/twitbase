@@ -10,11 +10,12 @@ import org.apache.hadoop.hbase.util.Bytes;
 import HBaseIA.TwitBase.hbase.RelationsDAO;
 import HBaseIA.TwitBase.hbase.TwitsDAO;
 import HBaseIA.TwitBase.hbase.UsersDAO;
+import utils.HBaseUtils;
 
 public class InitTables {
 
   public static void main(String[] args) throws Exception {
-    Configuration conf = HBaseConfiguration.create();
+    Configuration conf = HBaseUtils.getConfiguration();
     HBaseAdmin admin = new HBaseAdmin(conf);
 
     // first do no harm
