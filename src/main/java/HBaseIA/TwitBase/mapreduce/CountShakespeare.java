@@ -12,10 +12,12 @@ import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import HBaseIA.TwitBase.hbase.TwitsDAO;
+import HBaseIA.TwitBase.mapreduce.CountShakespeare.Map.Counters;
 import utils.HBaseUtils;
 
 public class CountShakespeare {
@@ -27,6 +29,7 @@ public class CountShakespeare {
 		};
 
 		private Random rand;
+		private Counter counter1, counter2;
 
 		/**
 		 * Determines if the message pertains to Shakespeare.
@@ -38,6 +41,9 @@ public class CountShakespeare {
 		@Override
 		protected void setup(Context context) {
 			rand = new Random(System.currentTimeMillis());
+			counter1 = context.getCounter(Counters.ROWS);
+			counter2 = context.getCounter(Counters.SHAKESPEAREAN);
+
 		}
 
 		@Override
@@ -50,10 +56,17 @@ public class CountShakespeare {
 			if (msg.isEmpty())
 				return;
 
-			context.getCounter(Counters.ROWS).increment(1);
-			if (containsShakespear(msg))
-				context.getCounter(Counters.SHAKESPEAREAN).increment(1);
+			counter1 = context.getCounter(Counters.ROWS);
+			counter1.increment(1);
+			if (containsShakespear(msg)) {
+				counter2 = context.getCounter(Counters.SHAKESPEAREAN);
+				counter2.increment(1);
+			}
+			System.out.println("rows:" + counter1.getValue());
+			System.out.println("shake:" + counter2.getValue());
+
 		}
+
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -68,6 +81,7 @@ public class CountShakespeare {
 
 		job.setOutputFormatClass(NullOutputFormat.class);
 		job.setNumReduceTasks(0);
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
+
+		System.out.println(job.waitForCompletion(true) ? 0 : 1);
 	}
 }
