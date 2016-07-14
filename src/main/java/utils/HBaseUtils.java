@@ -15,9 +15,9 @@ import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 public class HBaseUtils {
 
-	private static final String HBASER_MASTER_IP = "192.168.3.128";
+	private static final String HBASER_MASTER_IP = "192.168.3.201";
 	private static final String HBASER_MASTER_PORT = "60000";
-	private static final String QUORUM_IP = "192.168.3.128";
+	private static final String QUORUM_IP = "192.168.3.201";
 	private static final String CLIENTPORT = "2181";
 	private static Configuration conf = null;
 	private static Connection conn = null;
@@ -33,6 +33,9 @@ public class HBaseUtils {
 	}
 
 	public static synchronized Connection getHConnection() {
+		if (conf == null) {
+			conf = getConfiguration();
+		}
 		if (conn == null) {
 			try {
 				conn = ConnectionFactory.createConnection(conf);

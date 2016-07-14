@@ -16,7 +16,7 @@ public class InitTables {
 
   public static void main(String[] args) throws Exception {
     Configuration conf = HBaseUtils.getConfiguration();
-    HBaseAdmin admin = new HBaseAdmin(conf);
+	HBaseAdmin admin = (HBaseAdmin) HBaseUtils.getHConnection().getAdmin();
 
     // first do no harm
     if (args.length > 0 && args[0].equalsIgnoreCase("-f")) {
